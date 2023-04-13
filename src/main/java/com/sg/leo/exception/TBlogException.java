@@ -6,5 +6,4 @@ public class TBlogException extends RuntimeException{
 	public TBlogException(String message) {
 		super(message);
 	}
-
 }
