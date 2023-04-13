@@ -13,8 +13,9 @@ import com.sg.leo.domain.User;
 @Mapper
 public interface UserMapper {
 	
-	@Insert("INSERT INTO USERS(ID, USERNAME, PASSWORD, EMAIL"
-			+ "VALUES((SELECT NVL(MAX(ID), 0) + 1 FROM USERS),"
+	@Insert("INSERT INTO USERS(ID, USERNAME, PASSWORD, EMAIL) "
+			//+ "VALUES((SELECT NVL(MAX(ID), 0) + 1 FROM USER),"
+			+ "VALUES(77,"
 			+ "#{username}, #{password}, #{email})")
 	public void inserUser(User user);
 	

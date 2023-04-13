@@ -25,7 +25,7 @@ public class UserController {
 	public @ResponseBody String insertUser(@RequestBody User user) {
 		user.setRole(RoleType.USER);
 		userRepository.save(user);
-		return user.getUsername() + "회원 가입성공";
+		return user.toString() + "회원 가입성공";
 	}
 	
 	@GetMapping("/user/get/{id}")
