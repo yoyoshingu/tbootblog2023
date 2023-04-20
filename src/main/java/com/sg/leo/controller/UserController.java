@@ -82,4 +82,9 @@ public class UserController {
 		
 		return userRepository.findAll(pageable);
 	}
+	
+	@GetMapping("/auth/insertUser")
+	public String insertUser() {
+		return "insertUser";
+	}
 }
