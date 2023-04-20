@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sg.leo.domain.RoleType;
 import com.sg.leo.domain.User;
+import com.sg.leo.dto.ResponseDTO;
 import com.sg.leo.exception.TBlogException;
 import com.sg.leo.repository.UserRepository;
+import com.sg.leo.service.UserService;
 
 @Controller
 public class UserController {
@@ -86,5 +89,28 @@ public class UserController {
 	@GetMapping("/auth/insertUser")
 	public String insertUser() {
 		return "insertUser";
+	}
+	
+	@Autowired
+	private UserService userService;
+	
+	@PostMapping("/auth/login")
+	public @ResponseBody ResponseDTO<?> login(@RequestBody User user ) {
+		User findUser = userService.getUser(user.getUsername());
+		if(findUser.getUsername() != null) {
+			// 패스워드 비교
+			if(user.getPassword().equals(findUser.getPassword())) {
+				// 로그인 성공
+				return new ResponseDTO<>(HttpStatus.OK.value(),
+						user.getUsername() + "님 로그인 성공");
+			}{
+				return new ResponseDTO<>(HttpStatus.BAD_REQUEST.value(),
+						user.getUsername() + "님 비밀번호 다름");
+			}
+		}else {
+			// username  없음, 회원가입 필요
+			return new ResponseDTO<>(HttpStatus.BAD_REQUEST.value(),
+					user.getUsername() + "님 아이디없음");
+		}
 	}
 }
